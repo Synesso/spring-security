@@ -322,4 +322,22 @@ public class BCryptTests {
 
         assertFalse(BCrypt.equalsNoEarlyReturn("test", "pass"));
     }
+
+    @Test
+    public void checkLongPasswordWithSamePrefix() {
+        String salt = BCrypt.gensalt();
+        String longPassword = times(9, "password");
+        String evenLongerPassword= times(10, "password");
+        String hash = BCrypt.hashpw(longPassword, salt);
+        assertFalse(BCrypt.checkpw(evenLongerPassword, hash));
+    }
+
+    private String times(int repeat, String string) {
+        StringBuilder builder = new StringBuilder();
+        for (int i = 0; i < repeat; i++) {
+            builder.append(string);
+        }
+        return builder.toString();
+    }
+
 }
